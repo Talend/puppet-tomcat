@@ -41,23 +41,25 @@ class tomcat::source {
   $baseurl = "${sources_src}/tomcat-${maj_version}/v${version}/bin"
   $tomcaturl = "${baseurl}/apache-tomcat-${version}.tar.gz"
 
-  archive{ "apache-tomcat-${version}":
-    url         => $tomcaturl,
-    digest_url  => "${tomcaturl}.md5",
-    digest_type => 'md5',
-    target      => '/opt',
+  archive{ "/opt/apache-tomcat-${version}.tar.gz":
+    source        => $tomcaturl,
+    extract       => true,
+    checksum_url  => "${tomcaturl}.md5",
+    checksum_type => 'md5',
+    extract_path  => "/opt",
+    creates       => "/opt/apache-tomcat-${version}/lib"
   }
 
   file { '/opt/apache-tomcat':
     ensure  => link,
     target  => $::tomcat::home,
-    require => Archive["apache-tomcat-${version}"],
+    require => Archive["/opt/apache-tomcat-${version}.tar.gz"],
     before  => Class['tomcat::logging'],
   }
 
   file { $::tomcat::home:
     ensure  => directory,
-    require => Archive["apache-tomcat-${version}"],
+    require => Archive["/opt/apache-tomcat-${version}.tar.gz"],
   }
 
   # Workarounds

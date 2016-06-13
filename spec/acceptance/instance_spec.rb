@@ -5,7 +5,11 @@ describe 'tomcat::instance' do
   context 'with defaults' do
     it 'should idempotently run' do
       pp = <<-EOS
-        class { 'tomcat': }
+        class { 'tomcat':
+          version     => 8,
+          srcversion  => '8.0.33',
+          sources     => true,
+        }
         tomcat::instance { 'foo':
           manage => true,
         }
@@ -31,7 +35,11 @@ describe 'tomcat::instance' do
   context 'with another http port' do
     it 'should idempotently run' do
       pp = <<-EOS
-        class { 'tomcat': }
+        class { 'tomcat':
+          version     => 8,
+          srcversion  => '8.0.33',
+          sources     => true,
+        }
         tomcat::instance { 'foo':
           http_port => '8081',
           manage    => true,
@@ -62,7 +70,11 @@ describe 'tomcat::instance' do
   context 'with an env variable set' do
     it 'should idempotently run' do
       pp = <<-EOS
-        class { 'tomcat': }
+        class { 'tomcat':
+          version     => 8,
+          srcversion  => '8.0.33',
+          sources     => true,
+        }
         tomcat::instance { 'foo':
           manage => true,
           setenv => ['USE_IMAGEMAGICK="true"',],

@@ -19,32 +19,33 @@ class tomcat::juli::debian {
     require => $require,
   }
 
-  archive::download { 'tomcat-juli.jar':
-    url         => "${baseurl}/extras/tomcat-juli.jar",
-    digest_url  => "${baseurl}/extras/tomcat-juli.jar.md5",
-    digest_type => 'md5',
-    src_target  => "${tomcat::home}/extras/",
-    require     => File["${tomcat::home}/extras/"],
+  archive { "${tomcat::home}/extras/tomcat-juli.jar":
+    source        => "${baseurl}/extras/tomcat-juli.jar",
+    checksum_url  => "${baseurl}/extras/tomcat-juli.jar.md5",
+    checksum_type => 'md5',
+    extract_path  => "${tomcat::home}/extras/",
+    require       => File["${tomcat::home}/extras/"],
+    extract       => false
   }
 
-  archive::download { 'tomcat-juli-adapters.jar':
-    url         => "${baseurl}/extras/tomcat-juli-adapters.jar",
-    digest_url  => "${baseurl}/extras/tomcat-juli-adapters.jar.md5",
-    digest_type => 'md5',
-    src_target  => "${tomcat::home}/extras/",
-    require     => File["${tomcat::home}/extras/"],
+  archive { "${tomcat::home}/extras/tomcat-juli-adapters.jar":
+    source        => "${baseurl}/extras/tomcat-juli-adapters.jar",
+    checksum_url  => "${baseurl}/extras/tomcat-juli-adapters.jar.md5",
+    checksum_type => 'md5',
+    extract_path  => "${tomcat::home}/extras/",
+    require       => File["${tomcat::home}/extras/"],
   }
 
   file { "${tomcat::home}/bin/tomcat-juli.jar":
     ensure  => link,
     target  => "${tomcat::home}/extras/tomcat-juli.jar",
-    require => Archive::Download['tomcat-juli.jar'],
+    require => Archive["${tomcat::home}/extras/tomcat-juli.jar"],
   }
 
   file { "${tomcat::home}/lib/tomcat-juli-adapters.jar":
     ensure  => link,
     target  => "${tomcat::home}/extras/tomcat-juli-adapters.jar",
-    require => Archive::Download['tomcat-juli-adapters.jar'],
+    require => Archive["${tomcat::home}/extras/tomcat-juli-adapters.jar"],
   }
 
 }
